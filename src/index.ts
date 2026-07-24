@@ -9,8 +9,9 @@ import {
   ReadResourceRequestSchema,
   ListResourceTemplatesRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { readFileSync, appendFileSync, statSync, openSync, readSync, closeSync } from "fs";
-import { extname, resolve } from "path";
+import { readFileSync, appendFileSync, statSync, openSync, readSync, closeSync, mkdirSync, existsSync } from "fs";
+import { extname, resolve, join, dirname } from "path";
+import { tmpdir } from "os";
 
 import { isZhihuUrl, fetchZhihuArticle, loadCookies as loadZhihuCookies } from "./zhihu/index.js";
 
@@ -77,11 +78,15 @@ function getMaxFileSize(type: FileType): number {
 // Debug logging
 // ---------------------------------------------------------------------------
 
-const LOG_FILE = "/tmp/quick-press-mcp.log";
+const LOG_FILE = join(tmpdir(), "quick-press-mcp.log");
 
 function log(msg: string) {
   const line = `[${new Date().toISOString()}] ${msg}\n`;
-  appendFileSync(LOG_FILE, line);
+  try {
+    const dir = dirname(LOG_FILE);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    appendFileSync(LOG_FILE, line);
+  } catch {}
   console.error(line.trim());
 }
 
