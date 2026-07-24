@@ -203,14 +203,11 @@ AI Agent 会：
 | 工具 | 说明 |
 |------|------|
 | `publish` | 从 URL 或本地文件发布（单一入口） |
-| `create_draft` | 创建草稿 |
-| `publish_post` | 发布或更新文章 |
 | `list_posts` | 列出所有文章 |
 | `get_post` | 根据 ID 获取文章详情 |
 | `delete_post` | 永久删除文章 |
 | `search_posts` | 按关键词搜索 |
 | `upload_media` | 上传图片/媒体文件 |
-| `extract_summary` | AI 提取摘要和关键词 |
 | `get_stats` | 获取博客统计 |
 
 ## 开发

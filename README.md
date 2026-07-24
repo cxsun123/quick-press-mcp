@@ -202,14 +202,11 @@ The AI agent will:
 | Tool | Description |
 |------|-------------|
 | `publish` | Publish from URL or local file (single entry point) |
-| `create_draft` | Create a new draft post |
-| `publish_post` | Publish or update a post with full content |
 | `list_posts` | List all posts |
 | `get_post` | Get full post details by ID |
 | `delete_post` | Delete a post permanently |
 | `search_posts` | Search posts by keyword |
 | `upload_media` | Upload image/media |
-| `extract_summary` | Extract summary and keywords using AI |
 | `get_stats` | Get blog statistics |
 
 ## Development

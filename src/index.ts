@@ -160,31 +160,6 @@ function readLocalFile(filePath: string): { fileContent: string; fileName: strin
 
 // JSON Schema definitions (avoid zod-to-json-schema compatibility issues with Zod 4)
 const S: Record<string, any> = {
-  create_draft: {
-    type: "object",
-    properties: {
-      title: { type: "string", description: "Post title" },
-      content: { type: "string", description: "Markdown content" },
-      tags: { type: "array", items: { type: "string" }, description: "Tag names" },
-      categories: { type: "array", items: { type: "string" }, description: "Category names" },
-      visibility: { type: "string", enum: ["public", "private", "password"], description: "Post visibility" },
-      coverImage: { type: "string", description: "Cover image URL" },
-    },
-  },
-  publish_post: {
-    type: "object",
-    properties: {
-      postId: { type: "string", description: "Post ID to update (omit to create new)" },
-      title: { type: "string", description: "Post title" },
-      content: { type: "string", description: "Markdown content" },
-      summary: { type: "string", description: "Article summary (auto-extracted if omitted)" },
-      keywords: { type: "array", items: { type: "string" }, description: "Keywords (auto-extracted if omitted)" },
-      tags: { type: "array", items: { type: "string" }, description: "Tag names" },
-      categories: { type: "array", items: { type: "string" }, description: "Category names" },
-      visibility: { type: "string", enum: ["public", "private", "password"], description: "Post visibility (default: public)" },
-      coverImage: { type: "string", description: "Cover image URL" },
-    },
-  },
   list_posts: {
     type: "object",
     properties: {
@@ -222,11 +197,6 @@ const S: Record<string, any> = {
       maxWidth: { type: "number", description: "Max width in pixels (default: 800)" },
       quality: { type: "number", description: "JPEG quality 1-100 (default: 80)" },
     },
-  },
-  extract_summary: {
-    type: "object",
-    properties: { content: { type: "string", description: "Article content (markdown)" } },
-    required: ["content"],
   },
   publish: {
     type: "object",
@@ -270,15 +240,12 @@ const TOOLS: ToolDef[] = [
       "工具内置文件解析和 URL 抓取能力，只需提供文件路径或 URL 即可，无需手动提取文本或下载。\n" +
       "Do NOT use pdftotext/python3 — this tool handles everything internally.",
   },
-  { name: "create_draft", description: "Create a new draft post. Params: title, content (markdown), tags[], categories[], visibility (public|private|password), coverImage" },
-  { name: "publish_post", description: "Publish or update a post with full content. Params: postId (omit to create new), title, content (markdown), summary, keywords[], tags[], categories[], visibility, coverImage" },
   { name: "list_posts", description: "List all posts. Params: status (draft|published|scheduled), visibility, limit (default 50), offset" },
   { name: "get_post", description: "Get full post details. Params: postId (required)" },
   { name: "delete_post", description: "Delete a post permanently. Params: postId (required)" },
   { name: "search_posts", description: "Search posts by keyword. Params: query (required), limit (default 20)" },
   { name: "get_stats", description: "Get blog statistics. No params needed." },
   { name: "upload_media", description: "Upload image/media. Params: url (download from URL) or base64+filename, maxWidth (default 800), quality (1-100, default 80)" },
-  { name: "extract_summary", description: "Extract summary and keywords using AI. Params: content (markdown, required)" },
 ];
 
 // ---------------------------------------------------------------------------
