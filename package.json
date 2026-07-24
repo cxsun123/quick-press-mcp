@@ -1,6 +1,6 @@
 {
   "name": "quick-press-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Local MCP Client for quick-press blog — reads local files and forwards to remote MCP Server",
   "type": "module",
   "main": "dist/index.js",
