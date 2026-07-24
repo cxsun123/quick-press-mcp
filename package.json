@@ -1,0 +1,41 @@
+{
+  "name": "quick-press-mcp",
+  "version": "0.1.0",
+  "description": "Local MCP Client for quick-press blog — reads local files and forwards to remote MCP Server",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "quick-press-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/quick-press-mcp"
+  },
+  "keywords": [
+    "mcp",
+    "quick-press",
+    "blog",
+    "cms"
+  ],
+  "license": "MIT"
+}
