@@ -1,3 +1,5 @@
+<a href="README.md">English</a> | <a href="README.zh-CN.md">简体中文</a>
+
 # quick-press-mcp
 
 quick-press 博客 CMS 的本地 MCP Client。

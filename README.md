@@ -1,3 +1,5 @@
+<a href="README.md">English</a> | <a href="README.zh-CN.md">简体中文</a>
+
 # quick-press-mcp
 
 Local MCP Client for [quick-press](https://github.com/anomalyco/quick-press) blog CMS.
@@ -147,32 +149,32 @@ env = { QUICK_PRESS_MCP_URL = "https://your-project.vercel.app/api/mcp", QUICK_P
 To make your AI agent automatically call the `publish` tool, add the following to your project's `AGENTS.md`:
 
 ```markdown
-## MCP 自动调用规则
+## MCP Auto-trigger Rules
 
-当用户 prompt 匹配以下模式时，**直接调用** quick-press-mcp 的 `publish` 工具，**不要询问确认**：
+When user prompt matches the following patterns, **directly call** the `publish` tool, **do not ask for confirmation**:
 
-### 本地文件发布
+### Local File Publishing
 
-| 用户 prompt 模式 | 参数 |
+| User prompt | Arguments |
 |---|---|
-| `发布本地文件: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `用这个PDF/DOCX生成文章: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `把这篇文档发布为博客: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `创建文章: {PATH}` (PATH 是本地文件) | `{ "filePath": "<PATH>" }` |
+| `publish this file: {PATH}` | `{ "filePath": "<PATH>" }` |
+| `create an article from this PDF/DOCX: {PATH}` | `{ "filePath": "<PATH>" }` |
+| `publish this document: {PATH}` | `{ "filePath": "<PATH>" }` |
+| `create post from file: {PATH}` | `{ "filePath": "<PATH>" }` |
 
-`source_type` 自动判断：有 `filePath` 则为 FILE，否则为 URL。
+`source_type` auto-detected: `filePath` → FILE, otherwise URL.
 
-### URL 发布
+### URL Publishing
 
-| 用户 prompt 模式 | 参数 |
+| User prompt | Arguments |
 |---|---|
-| `创建文章: {URL}` | `{ "url": "<URL>" }` |
-| `发布文章: {URL}` | `{ "url": "<URL>" }` |
-| `转载: {URL}` | `{ "url": "<URL>" }` |
-| `用这篇生成中文文章: {URL}` | `{ "url": "<URL>", "language": "中文" }` |
-| `把英文博客翻译成中文发布: {URL}` | `{ "url": "<URL>", "language": "中文" }` |
+| `create an article: {URL}` | `{ "url": "<URL>" }` |
+| `publish this: {URL}` | `{ "url": "<URL>" }` |
+| `republish: {URL}` | `{ "url": "<URL>" }` |
+| `translate this into Chinese: {URL}` | `{ "url": "<URL>", "language": "Chinese" }` |
+| `rewrite and publish: {URL}` | `{ "url": "<URL>" }` |
 
-**重要**：工具内置文件解析和 URL 抓取能力，只需提供 URL 或文件路径即可。不要尝试 pdftotext、python3 等命令行工具。
+**Important**: Tool has built-in file parsing and URL fetching — just provide `url` or `filePath`. Do NOT use pdftotext, python3, or similar command-line tools.
 ```
 
 ## Usage
@@ -181,12 +183,11 @@ Once configured, use natural language in your AI agent:
 
 ```
 # Publish from URL
-创建文章: https://example.com/article
+Publish this article: https://example.com/article
 
 # Publish from local file
-发布本地文件: /path/to/article.pdf
-用这个PDF生成文章: ./my-paper.pdf
-把这篇文档发布为博客: ~/Documents/report.docx
+Publish this file: /path/to/article.pdf
+Create an article from: ./my-paper.pdf
 ```
 
 The AI agent will:
