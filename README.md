@@ -28,7 +28,7 @@ npm install -g quick-press-mcp
 Or use directly via `npx` (no install needed):
 
 ```bash
-npx quick-press-mcp
+npx quick-press-mcp@latest
 ```
 
 ## Configure
@@ -43,7 +43,7 @@ Add to `~/.config/opencode/opencode.json`:
     "quick-press-mcp": {
       "enabled": true,
       "type": "local",
-      "command": ["npx", "quick-press-mcp"],
+      "command": ["npx", "quick-press-mcp@latest"],
       "environment": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -65,7 +65,7 @@ Add to `~/.claude.json` under `mcpServers`:
     "quick-press-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["quick-press-mcp"],
+      "args": ["quick-press-mcp@latest"],
       "env": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -84,7 +84,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "quick-press-mcp": {
       "command": "npx",
-      "args": ["quick-press-mcp"],
+      "args": ["quick-press-mcp@latest"],
       "env": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -103,7 +103,7 @@ Add to `.cursor/mcp.json` (or equivalent config) in your project:
   "mcpServers": {
     "quick-press-mcp": {
       "command": "npx",
-      "args": ["quick-press-mcp"],
+      "args": ["quick-press-mcp@latest"],
       "env": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -120,7 +120,7 @@ Add to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.quick-press-mcp]
 command = "npx"
-args = ["-y", "quick-press-mcp"]
+args = ["-y", "quick-press-mcp@latest"]
 env = { QUICK_PRESS_MCP_URL = "https://your-project.vercel.app/api/mcp", QUICK_PRESS_MCP_API_KEY = "sk-your-key-here" }
 ```
 

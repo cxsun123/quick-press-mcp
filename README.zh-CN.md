@@ -28,7 +28,7 @@ npm install -g quick-press-mcp
 或直接通过 `npx` 使用（无需安装）：
 
 ```bash
-npx quick-press-mcp
+npx quick-press-mcp@latest
 ```
 
 ## 环境变量
@@ -99,7 +99,7 @@ export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.
     "quick-press-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["quick-press-mcp"],
+      "args": ["quick-press-mcp@latest"],
       "env": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -118,7 +118,7 @@ export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.
   "mcpServers": {
     "quick-press-mcp": {
       "command": "npx",
-      "args": ["quick-press-mcp"],
+      "args": ["quick-press-mcp@latest"],
       "env": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -137,7 +137,7 @@ export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.
   "mcpServers": {
     "quick-press-mcp": {
       "command": "npx",
-      "args": ["quick-press-mcp"],
+      "args": ["quick-press-mcp@latest"],
       "env": {
         "QUICK_PRESS_MCP_URL": "https://your-project.vercel.app/api/mcp",
         "QUICK_PRESS_MCP_API_KEY": "sk-your-key-here"
@@ -154,7 +154,7 @@ export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.
 ```toml
 [mcp_servers.quick-press-mcp]
 command = "npx"
-args = ["-y", "quick-press-mcp"]
+args = ["-y", "quick-press-mcp@latest"]
 env = { QUICK_PRESS_MCP_URL = "https://your-project.vercel.app/api/mcp", QUICK_PRESS_MCP_API_KEY = "sk-your-key-here" }
 ```
 
