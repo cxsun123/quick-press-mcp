@@ -12,6 +12,8 @@ import {
 import { readFileSync, appendFileSync, statSync, openSync, readSync, closeSync } from "fs";
 import { extname, resolve } from "path";
 
+import { isZhihuUrl, fetchZhihuArticle, loadCookies as loadZhihuCookies } from "./zhihu/index.js";
+
 // ---------------------------------------------------------------------------
 // File type detection (mirrors server logic)
 // ---------------------------------------------------------------------------
@@ -237,7 +239,8 @@ const TOOLS: ToolDef[] = [
       "  skipRewrite (boolean) — skip AI rewrite\n" +
       "  language (string) — output language (e.g. 中文, English, 日本語)\n" +
       "Built-in file parsing and URL fetching — just provide filePath or url, no manual extraction needed. " +
-      "工具内置文件解析和 URL 抓取能力，只需提供文件路径或 URL 即可，无需手动提取文本或下载。\n" +
+      "工具内置文件解析和 URL 抓取能力，只需提供文件路径或 URL 即可，无需手动提取文本或下载。" +
+      "Supports zhuanlan.zhihu.com anti-scraping bypass (via ZHIHU_COOKIES env).\n" +
       "Do NOT use pdftotext/python3 — this tool handles everything internally.",
   },
   { name: "list_posts", description: "List all posts. Params: status (draft|published|scheduled), visibility, limit (default 50), offset" },
@@ -364,17 +367,39 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           language: remoteArgs.language,
         };
       } else {
-        remoteName = "publish_full";
-        remoteArgs = {
-          url: remoteArgs.url,
-          text: remoteArgs.text,
-          visibility: remoteArgs.visibility,
-          imageUrl: remoteArgs.imageUrl,
-          imageQuery: remoteArgs.imageQuery,
-          imageCount: remoteArgs.imageCount,
-          skipRewrite: remoteArgs.skipRewrite,
-          language: remoteArgs.language,
-        };
+        const url = remoteArgs.url as string | undefined;
+        if (url && isZhihuUrl(url)) {
+          log("detected zhihu URL, fetching via zhihu API");
+          const zhihuCookies = loadZhihuCookies();
+          if (!zhihuCookies) {
+            throw new Error(
+              "Zhihu cookies not found. Please set ZHIHU_COOKIES env var or save cookies to ~/.quick-press-mcp/zhihu-cookies.json"
+            );
+          }
+          const article = await fetchZhihuArticle(url, zhihuCookies);
+          remoteName = "publish_full";
+          remoteArgs = {
+            title: article.title,
+            text: article.markdown,
+            visibility: remoteArgs.visibility,
+            imageUrl: remoteArgs.imageUrl || article.coverUrl,
+            imageQuery: remoteArgs.imageQuery,
+            imageCount: remoteArgs.imageCount,
+            language: remoteArgs.language,
+          };
+        } else {
+          remoteName = "publish_full";
+          remoteArgs = {
+            url: remoteArgs.url,
+            text: remoteArgs.text,
+            visibility: remoteArgs.visibility,
+            imageUrl: remoteArgs.imageUrl,
+            imageQuery: remoteArgs.imageQuery,
+            imageCount: remoteArgs.imageCount,
+            skipRewrite: remoteArgs.skipRewrite,
+            language: remoteArgs.language,
+          };
+        }
       }
       // Drop undefined values
       Object.keys(remoteArgs).forEach((k) => remoteArgs[k] === undefined && delete remoteArgs[k]);

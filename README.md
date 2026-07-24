@@ -130,6 +130,33 @@ env = { QUICK_PRESS_MCP_URL = "https://your-project.vercel.app/api/mcp", QUICK_P
 |----------|----------|-------------|
 | `QUICK_PRESS_MCP_URL` | Yes | Remote MCP Server endpoint, e.g. `https://xxx.vercel.app/api/mcp` |
 | `QUICK_PRESS_MCP_API_KEY` | Yes | API key (e.g. `sk-xxx`) for authorization |
+| `ZHIHU_COOKIES` | No | Zhihu cookies (JSON) for anti-scraping bypass when publishing from zhuanlan.zhihu.com |
+
+### Zhihu Anti-Scraping Support
+
+Zhihu blocks programmatic access. To publish articles from `zhuanlan.zhihu.com/p/xxx`, you need to provide valid cookies:
+
+1. Log into [zhihu.com](https://www.zhihu.com) in your browser
+2. Open DevTools → Application → Cookies → `zhihu.com`
+3. Export cookies as a JSON object with `cookies` array and `d_c0` value
+4. Store them:
+
+**Via environment variable:**
+```bash
+export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.com"},...],"d_c0":"xxx","savedAt":1700000000000}'
+```
+
+**Via file** (stored at `~/.quick-press-mcp/zhihu-cookies.json`):
+```json
+{
+  "cookies": [
+    {"name": "d_c0", "value": "xxx", "domain": ".zhihu.com"},
+    {"name": "zse_ck", "value": "xxx", "domain": ".zhihu.com"}
+  ],
+  "d_c0": "xxx",
+  "savedAt": 1700000000000
+}
+```
 
 ## Supported file types
 

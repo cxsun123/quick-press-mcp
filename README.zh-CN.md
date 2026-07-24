@@ -37,6 +37,33 @@ npx quick-press-mcp
 |------|------|------|
 | `QUICK_PRESS_MCP_URL` | 是 | 远程 MCP Server 地址，如 `https://xxx.vercel.app/api/mcp` |
 | `QUICK_PRESS_MCP_API_KEY` | 是 | API key（如 `sk-xxx`）用于鉴权 |
+| `ZHIHU_COOKIES` | 否 | 知乎 cookie（JSON 格式），用于绕过反扒，发布 zhuanlan.zhihu.com 文章时需要 |
+
+### 知乎反扒支持
+
+知乎会拦截程序化访问。发布 `zhuanlan.zhihu.com/p/xxx` 文章需要提供有效 cookie：
+
+1. 在浏览器中登录 [zhihu.com](https://www.zhihu.com)
+2. 打开 DevTools → Application → Cookies → `zhihu.com`
+3. 导出 cookie 为 JSON 格式，包含 `cookies` 数组和 `d_c0` 值
+4. 配置到环境变量或文件：
+
+**环境变量方式：**
+```bash
+export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.com"},...],"d_c0":"xxx","savedAt":1700000000000}'
+```
+
+**文件方式**（存到 `~/.quick-press-mcp/zhihu-cookies.json`）：
+```json
+{
+  "cookies": [
+    {"name": "d_c0", "value": "xxx", "domain": ".zhihu.com"},
+    {"name": "zse_ck", "value": "xxx", "domain": ".zhihu.com"}
+  ],
+  "d_c0": "xxx",
+  "savedAt": 1700000000000
+}
+```
 
 ## 配置
 
