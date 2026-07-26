@@ -2,6 +2,8 @@
 
 # quick-press-mcp
 
+[![npm version](https://img.shields.io/npm/v/quick-press-mcp)](https://www.npmjs.com/package/quick-press-mcp)
+
 quick-press 博客 CMS 的本地 MCP Client。
 
 通过 stdio 运行在本地，读取本地文件，转发请求到远程 quick-press MCP Server。让 AI Agent 可以直接发布本地 PDF/DOCX/MD 文件或从 URL 抓取文章。
@@ -245,6 +247,15 @@ cd quick-press-mcp
 npm install
 npm run build
 npm link  # 全局可用 `quick-press-mcp` 命令
+```
+
+### 发布
+
+```bash
+# Auth token 在 .npmrc 中（registry.npmjs.org）
+# 如果全局 registry 设为镜像（如 npmmirror.com），需要覆盖：
+npm version <new-version>
+npm publish --registry=https://registry.npmjs.org
 ```
 
 ## License

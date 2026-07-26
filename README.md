@@ -2,6 +2,8 @@
 
 # quick-press-mcp
 
+[![npm version](https://img.shields.io/npm/v/quick-press-mcp)](https://www.npmjs.com/package/quick-press-mcp)
+
 Local MCP Client for [quick-press](https://github.com/anomalyco/quick-press) blog CMS.
 
 Runs on your machine via stdio, reads local files, and forwards requests to the remote quick-press MCP Server. This bridges the gap between AI agents and the remote server — agents can now publish local PDF/DOCX/MD files directly.
@@ -244,6 +246,15 @@ cd quick-press-mcp
 npm install
 npm run build
 npm link  # make `quick-press-mcp` available globally
+```
+
+### Publishing
+
+```bash
+# Auth token in .npmrc (registry.npmjs.org)
+# If global registry is set to a mirror (e.g. npmmirror.com), override it:
+npm version <new-version>
+npm publish --registry=https://registry.npmjs.org
 ```
 
 ## License
