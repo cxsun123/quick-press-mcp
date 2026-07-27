@@ -264,7 +264,14 @@ const toolMap = new Map(TOOLS.map((t) => [t.name, t]));
 
 const server = new Server(
   { name: "quick-press-mcp", version: "0.1.0" },
-  { capabilities: { tools: {}, resources: {} } }
+  {
+    capabilities: { tools: {}, resources: {} },
+    instructions:
+      "Current tools (this list may change — call tools/list or check here, don't assume names from memory):\n" +
+      TOOLS.map((t) => `- ${t.name}`).join("\n") +
+      "\n\nUse `publish` for anything that should end up as a post (URL, raw text, or a local file — it handles parsing/rewriting internally). " +
+      "There is no separate draft/manual-content tool; do not fall back to manual file parsing.",
+  }
 );
 log(`Server created: name=quick-press-mcp, version=0.1.0, capabilities=${JSON.stringify({ tools: {}, resources: {} })}`);
 
