@@ -5,3 +5,5 @@ dist/
 .env.production
 .npmrc
 *.tsbuildinfo
+.idea/
+pnpm-lock.yaml
