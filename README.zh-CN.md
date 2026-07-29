@@ -173,38 +173,48 @@ env = { QUICK_PRESS_MCP_URL = "https://your-project.vercel.app/api/mcp", QUICK_P
 | `.rtf` | 是 | Rich Text — AI 全文重写 |
 | `.ppt` `.pptx` | 是 | PowerPoint — AI 全文重写 |
 
-## AGENTS.md — 自动触发规则
+## AGENTS.md / CLAUDE.md — 自动触发规则
 
-在项目的 `AGENTS.md` 中添加以下内容，让 AI Agent 自动调用 `publish` 工具：
+在项目的 `AGENTS.md` 或 `CLAUDE.md` 中添加以下内容，让 AI Agent 自动调用 `publish` 工具：
 
 ```markdown
-## MCP 自动调用规则
+## MCP 自动调用规则 — 文章发布
 
-当用户 prompt 匹配以下模式时，**直接调用** quick-press-mcp 的 `publish` 工具，**不要询问确认**：
-
-### 本地文件发布
-
-| 用户 prompt 模式 | 参数 |
-|---|---|
-| `发布本地文件: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `用这个PDF/DOCX生成文章: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `把这篇文档发布为博客: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `创建文章: {PATH}` (PATH 是本地文件) | `{ "filePath": "<PATH>" }` |
-
-`source_type` 自动判断：有 `filePath` 则为 FILE，否则为 URL。
-
-### URL 发布
+当用户要求从 URL 或本地文件 发布文章 时，**直接调用** `publish` MCP 工具。
+**不要自己抓取 URL 内容** — 工具内置抓取和 AI 重写。
 
 | 用户 prompt 模式 | 参数 |
 |---|---|
-| `创建文章: {URL}` | `{ "url": "<URL>" }` |
-| `发布文章: {URL}` | `{ "url": "<URL>" }` |
-| `转载: {URL}` | `{ "url": "<URL>" }` |
-| `用这篇生成中文文章: {URL}` | `{ "url": "<URL>", "language": "中文" }` |
-| `把英文博客翻译成中文发布: {URL}` | `{ "url": "<URL>", "language": "中文" }` |
+| `发布文章: {URL}` / `创建文章: {URL}` / `转载: {URL}` | `{ "url": "<URL>" }` |
+| `发布本地文件: {PATH}` / `用这个PDF/DOCX生成文章: {PATH}` | `{ "filePath": "<PATH>" }` |
+| 指定语言 | `{ "url": "<URL>", "language": "中文" }` |
 
-**重要**：工具内置文件解析和 URL 抓取能力，只需提供 URL 或文件路径即可。不要尝试 pdftotext、python3 等命令行工具。
+`source_type` 根据 url/filePath 自动判断。
+
+**规则：**
+- 判断 PATH 是本地文件还是 URL，`filePath` → `publish({filePath})`，`url` → `publish({url})`
+- DO NOT use `ctx_fetch_and_index`, `webfetch`, 或其他抓取工具 — 直接调用 `publish`，它内部处理抓取
+- 文件类型自动处理：PDF/DOC/DOCX/ODT/RTF/PPT/PPTX → AI 重写；MD/HTML/TXT → 直接发布
+- 若用户显式要求不同语言，传 `language` 参数
 ```
+
+### 返回值
+
+`publish` 工具返回以下 JSON：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `postId` | string | 文章的 UUID |
+| `slug` | string | URL 标识 |
+| `url` | string | 完整前台 URL（public/password）或相对路径（private） |
+| `title` | string | 文章标题 |
+| `summary` | string | AI 生成的摘要 |
+| `keywords` | string[] | 提取的关键词 |
+| `categories` | string[] | 分配的分类 |
+| `tags` | string[] | 分配的标签 |
+| `coverImage` | string\|null | 上传的封面图 URL |
+| `imagesUploaded` | number | 文章中嵌入的图片数量 |
+| `password_plaintext` | string | 仅当 `visibility=password` 时返回 |
 
 ## 使用
 

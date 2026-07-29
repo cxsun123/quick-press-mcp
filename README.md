@@ -173,38 +173,48 @@ export ZHIHU_COOKIES='{"cookies":[{"name":"d_c0","value":"xxx","domain":".zhihu.
 | `.rtf` | Yes | Rich Text — full AI rewrite |
 | `.ppt` `.pptx` | Yes | PowerPoint — full AI rewrite |
 
-## AGENTS.md — Auto-trigger Rules
+## AGENTS.md / CLAUDE.md — Auto-trigger Rules
 
-To make your AI agent automatically call the `publish` tool, add the following to your project's `AGENTS.md`:
+To make your AI agent automatically call the `publish` tool, add the following to your project's `AGENTS.md` or `CLAUDE.md`:
 
 ```markdown
-## MCP Auto-trigger Rules
+## MCP Auto-trigger Rules — Article Publishing
 
-When user prompt matches the following patterns, **directly call** the `publish` tool, **do not ask for confirmation**:
+When the user asks to publish an article from a URL or local file, **directly call** the `publish` MCP tool.
+**Do not fetch the URL yourself** — the tool has built-in fetching and AI rewriting.
 
-### Local File Publishing
-
-| User prompt | Arguments |
+| User says | Arguments |
 |---|---|
-| `publish this file: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `create an article from this PDF/DOCX: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `publish this document: {PATH}` | `{ "filePath": "<PATH>" }` |
-| `create post from file: {PATH}` | `{ "filePath": "<PATH>" }` |
+| `发布文章: {URL}` / `创建文章: {URL}` / `转载: {URL}` | `{ "url": "<URL>" }` |
+| `发布本地文件: {PATH}` / `用这个PDF/DOCX生成文章: {PATH}` | `{ "filePath": "<PATH>" }` |
+| Translate/rewrite in a specific language | `{ "url": "<URL>", "language": "中文" }` |
 
-`source_type` auto-detected: `filePath` → FILE, otherwise URL.
+`source_type` is auto-detected: `filePath` → FILE, otherwise URL.
 
-### URL Publishing
-
-| User prompt | Arguments |
-|---|---|
-| `create an article: {URL}` | `{ "url": "<URL>" }` |
-| `publish this: {URL}` | `{ "url": "<URL>" }` |
-| `republish: {URL}` | `{ "url": "<URL>" }` |
-| `translate this into Chinese: {URL}` | `{ "url": "<URL>", "language": "Chinese" }` |
-| `rewrite and publish: {URL}` | `{ "url": "<URL>" }` |
-
-**Important**: Tool has built-in file parsing and URL fetching — just provide `url` or `filePath`. Do NOT use pdftotext, python3, or similar command-line tools.
+**Rules:**
+- Detect whether PATH is a local file or a URL. `filePath` → `publish({filePath})`, `url` → `publish({url})`
+- DO NOT use `ctx_fetch_and_index`, `webfetch`, or any other web fetching tool — call `publish` directly, it handles fetching internally
+- File types auto-handled: PDF/DOC/DOCX/ODT/RTF/PPT/PPTX → AI rewrite; MD/HTML/TXT → direct publish
+- If the user explicitly requests a different language, pass the `language` parameter
 ```
+
+### Return Values
+
+The `publish` tool returns the following JSON:
+
+| Field | Type | Description |
+|---|---|---|
+| `postId` | string | UUID of the created post |
+| `slug` | string | URL slug |
+| `url` | string | Full frontend URL (public/password) or relative path (private) |
+| `title` | string | Article title |
+| `summary` | string | AI-generated summary |
+| `keywords` | string[] | Extracted keywords |
+| `categories` | string[] | Assigned categories |
+| `tags` | string[] | Assigned tags |
+| `coverImage` | string\|null | Uploaded cover image URL |
+| `imagesUploaded` | number | Count of images embedded in the article |
+| `password_plaintext` | string | Only returned when `visibility=password` |
 
 ## Usage
 
