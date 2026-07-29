@@ -246,7 +246,16 @@ const TOOLS: ToolDef[] = [
       "Built-in file parsing and URL fetching — just provide filePath or url, no manual extraction needed. " +
       "工具内置文件解析和 URL 抓取能力，只需提供文件路径或 URL 即可，无需手动提取文本或下载。" +
       "Supports zhuanlan.zhihu.com anti-scraping bypass (via ZHIHU_COOKIES env).\n" +
-      "Do NOT use pdftotext/python3 — this tool handles everything internally.",
+      "Do NOT use pdftotext/python3 — this tool handles everything internally.\n" +
+      "\n" +
+      "Returns JSON:\n" +
+      "  postId (string) — UUID of the created post\n" +
+      "  slug (string) — URL slug\n" +
+      "  url (string) — full frontend URL (public) or relative path (private)\n" +
+      "  title / summary / keywords / categories / tags — content metadata\n" +
+      "  coverImage (string or null) — uploaded cover image URL\n" +
+      "  imagesUploaded (number) — count of images embedded\n" +
+      "  password_plaintext (string) — only returned when visibility=password",
   },
   { name: "list_posts", description: "List all posts. Params: status (draft|published|scheduled), visibility, limit (default 50), offset" },
   { name: "get_post", description: "Get full post details. Params: postId (required)" },
